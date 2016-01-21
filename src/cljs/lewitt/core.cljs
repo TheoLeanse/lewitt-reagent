@@ -31,8 +31,20 @@
   [:svg {:width 100 :height 100}
    [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 100 L 100 0"}]])
 
+(def random-nums
+  (repeatedly #(rand-int 6)))
+
+(defn row [row-length]
+  (take row-length random-nums))
+  
+(defn grid [x y]
+  [:div
+     (row x)])
+
 (defn home-page []
-  [:div (line-one) (line-two)(line-three)(line-four)(line-five)(line-six)])
+  [:div
+   [:div (line-one) (line-two)(line-three)(line-four)(line-five)(line-six)]
+   [:div (grid 10 10)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
