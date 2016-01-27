@@ -31,20 +31,34 @@
   [:svg {:width 100 :height 100}
    [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 100 L 100 0"}]])
 
-(def random-nums
-  (repeatedly #(rand-int 6)))
+;; -----------------------------
+
+(defn random-path []
+  (rand-nth
+   ["M0 0 Q 100 0 100 100"
+    "M 0 100 Q 0 0 100 0"
+    "M 0 100 Q 100 100 100 0"
+    "M 0 0 Q 0 100 100 100"
+    "M 0 0 L 100 100"
+    "M 0 100 L 100 0"]))
+
+(defn lewitt-line []
+  [:svg {:width 100 :height 100}
+   [:path {:stroke "black" :stroke-width 2 :fill "none" :d (random-path)}]])
+
+(def random-lines
+  (repeatedly #(lewitt-line)))
 
 (defn row [row-length]
-  (take row-length random-nums))
+  (take row-length random-lines))
   
 (defn grid [x y]
   [:div
      (row x)])
 
 (defn home-page []
-  [:div
-   [:div (line-one) (line-two)(line-three)(line-four)(line-five)(line-six)]
-   [:div (grid 10 10)]])
+  [:div   
+   [:div (grid 60 10)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
