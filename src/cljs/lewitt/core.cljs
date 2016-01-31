@@ -7,32 +7,6 @@
 ;; -------------------------
 ;; Views
 
-(defn line-one []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M0 0 Q 100 0 100 100"}]])
-
-(defn line-two []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 100 Q 0 0 100 0"}]])
-
-(defn line-three []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 100 Q 100 100 100 0"}]])
-
-(defn line-four []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 0 Q 0 100 100 100"}]])
-
-(defn line-five []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 0 L 100 100"}]])
-
-(defn line-six []
-  [:svg {:width 100 :height 100}
-   [:path {:stroke "black" :stroke-width 2 :fill "none" :d "M 0 100 L 100 0"}]])
-
-;; -----------------------------
-
 (defn random-path []
   (rand-nth
    ["M0 0 Q 100 0 100 100"
@@ -46,19 +20,16 @@
   [:svg {:width 100 :height 100}
    [:path {:stroke "black" :stroke-width 2 :fill "none" :d (random-path)}]])
 
-(def random-lines
-  (repeatedly #(lewitt-line)))
-
 (defn row [row-length]
-  (take row-length random-lines))
+  (take row-length (repeatedly #(lewitt-line))))
   
-(defn grid [x y]
-  [:div
-     (row x)])
+(def artwork (atom (row 60)))
+
+(js/setInterval #(reset! artwork (row 60)) 400)
 
 (defn home-page []
   [:div   
-   [:div (grid 60 10)]])
+   [:div @artwork]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
